@@ -139,10 +139,7 @@ def search_products_public(
 
     offset = (page - 1) * page_size
     products = query.offset(offset).limit(page_size).all()
-<<<<<<< HEAD
-    #checkpoint if a product is not found with certain keywords
-=======
->>>>>>> 0142af0570e43da8bccb04634ad33b1750370c08
+    #checkpoint if a product is not found with certain keyword
     if not products:
         raise HTTPException(status_code=404, detail="No products found matching the keyword.")
     return products
