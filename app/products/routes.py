@@ -76,13 +76,14 @@ def delete_product(
     current_user: dict = Depends(get_current_admin_user)
 ):
     product = db.query(Product).filter(Product.id == product_id).first()
+    #checkpoint if a product is assosiated with certain order
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
     if db.query(OrderItem).filter(OrderItem.product_id == product.id).first():
         raise HTTPException(
         status_code=400,
         detail="Cannot delete product that is part of an existing order."
-        #Prevents deletion if the product is already ordered.
+        
     )
 
     db.delete(product)
@@ -138,6 +139,7 @@ def search_products_public(
 
     offset = (page - 1) * page_size
     products = query.offset(offset).limit(page_size).all()
+    #checkpoint if a product is not found with certain keywords
     if not products:
         raise HTTPException(status_code=404, detail="No products found matching the keyword.")
     return products
@@ -146,6 +148,7 @@ def search_products_public(
 #to get product by id
 def get_product_public(product_id: int, db: Session = Depends(get_db)):
     product = db.query(Product).filter(Product.id == product_id).first()
+    #checkpoint if a product is not found
     if not product:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
     return product
