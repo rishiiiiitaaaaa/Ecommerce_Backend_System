@@ -138,6 +138,8 @@ def search_products_public(
 
     offset = (page - 1) * page_size
     products = query.offset(offset).limit(page_size).all()
+    if not products:
+        raise HTTPException(status_code=404, detail="No products found matching the keyword.")
     return products
 
 @public_router.get("/products/{product_id}", response_model=ProductOut)
