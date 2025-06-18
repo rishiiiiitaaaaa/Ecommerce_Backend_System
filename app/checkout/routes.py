@@ -28,8 +28,7 @@ def dummy_checkout(
     user = db.query(auth_models.User).filter(auth_models.User.id == current_user["id"]).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
-    logger.debug(f"User found: {user.email}")
-
+    
     #Fetching Cart Items
     # Fetching Cart Items (only with quantity > 0)
     cart_items = db.query(cart_models.CartItem).filter(
@@ -39,8 +38,6 @@ def dummy_checkout(
 
     if not cart_items:
         raise HTTPException(status_code=400, detail="Cart is empty or has invalid items")
-
-    logger.debug(f"Cart has {len(cart_items)} items for user ID {user.id}")
 
     # Log problematic items for debugging
     for item in cart_items:
@@ -53,7 +50,7 @@ def dummy_checkout(
     if total_price <= 0:
         raise HTTPException(status_code=400, detail="Invalid total price. Cannot proceed with checkout.")
 
-    logger.info(f"Total price for checkout: ₹{total_price}")
+    logger.info(f"Total price for checkout: INR {total_price}")
 
     #create order
     order = order_models.Order(

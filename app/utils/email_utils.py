@@ -1,6 +1,6 @@
 import smtplib #Imports Python's built-in module for sending emails using the SMTP (Simple Mail Transfer Protocol).
 from email.mime.text import MIMEText # a class to create plain text email messages
-from app.core import logger
+from app.core.logger import logger
 def send_reset_email(to_email, token):
     # Specifies Gmail’s SMTP server and port.
     smtp_server = "smtp.gmail.com" 
@@ -27,5 +27,5 @@ def send_reset_email(to_email, token):
         server.quit()
         logger.info("Reset email sent successfully.")
     except Exception as e:
-        logger.info("Failed to send email:", str(e))
+        logger.exception("Failed to send email") 
         raise
